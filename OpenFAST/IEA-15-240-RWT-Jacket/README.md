@@ -1,5 +1,5 @@
 # IEA-15-240-RWT-Jacket
-This reponsitory contains files that can be used in OpenFAST to simulate a 3-legged jacket structure in 50m water depth. These files make reference to (and therefore require) some of the files found in the IEA-15-240-RWT and IEA-15-240-RWT-Monopile folders of the IEA-25-240-RWT repository.
+This reponsitory contains files that can be used in OpenFAST to simulate a 3-legged jacket structure in 50m water depth. These files make reference to (and therefore require) some of the files found in the IEA-15-240-RWT and IEA-15-240-RWT-Monopile folders.
 
 ## Main dimensions
 The 3-legged jacket model has the following main characteristics:
