@@ -1,0 +1,26 @@
+!---------------- Pile Head K and M elements -------------------!
+!Equivalent Stiffness Constants: Kxx, Kyy, Kzz, Kxtx, Kxty..Kztx,Kzty,Kztz  in any order; max 21 elements 
+1.18E+09				Kxx
+1.18E+09				Kyy
+1.88E+10				Kzz
+3.64E+10				Ktxtx
+3.64E+10				Ktyty
+1.04E+10				Ktztz
+5.12E+09				Kytx
+-5.12E+09				Kxty
+1.17E+05				Mxx
+1.17E+05				Myy
+1.17E+05				Mzz
+0.00E+00				Kxy
+0.00E+00				Kxz
+0.00E+00				Kyz
+0.00E+00				Kxtx
+0.00E+00				Kxtz
+0.00E+00				Kyty
+0.00E+00				Kytz
+0.00E+00				Kztx
+0.00E+00				Kzty
+0.00E+00				Kztz
+0.00E+00				Ktxty
+0.00E+00				Ktxtz
+0.00E+00				Ktytz

@@ -1,0 +1,208 @@
+------- HydroDyn v2.03.* Input File --------------------------------------------
+IEA 15 MW offshore reference model with jacket
+False            Echo           - Echo the input file data (flag)
+---------------------- ENVIRONMENTAL CONDITIONS --------------------------------
+        "default"   WtrDens        - Water density (kg/m^3)
+        "default"   WtrDpth        - Water depth (meters)
+        "default"   MSL2SWL        - Offset between still-water level and mean sea level (meters) [positive upward; unused when WaveMod = 6; must be zero if PotMod=1 or 2]
+---------------------- FLOATING PLATFORM --------------------------------------- [unused with WaveMod=6]
+             0   PotMod         - Potential-flow model {0: none=no potential flow, 1: frequency-to-time-domain transforms based on WAMIT output, 2: fluid-impulse theory (FIT)} (switch)
+	     0   ExctnMod       - Wave Excitation model {0: None, 1: DFT, 2: state-space} (switch) [only used when PotMod=1; STATE-SPACE REQUIRES *.ssexctn INPUT FILE]
+	     0   ExctnDisp	-
+             0   ExctnCutOff     -
+	     0   RdtnMod        - Radiation memory-effect model {0: no memory-effect calculation, 1: convolution, 2: state-space} (switch) [only used when PotMod=1; STATE-SPACE REQUIRES *.ss INPUT FILE]
+	   60.0  RdtnTMax       - Analysis time for wave radiation kernel calculations (sec) [only used when PotMod=1; determines RdtnDOmega=Pi/RdtnTMax in the cosine transform; MAKE SURE THIS IS LONG ENOUGH FOR THE RADIATION IMPULSE RESPONSE FUNCTIONS TO DECAY TO NEAR-ZERO FOR THE GIVEN PLATFORM!]
+	   0.0   RdtnDT         - Time step for wave radiation kernel calculations (sec) [only used when PotMod=1; DT<=RdtnDT<=0.1 recommended; determines RdtnOmegaMax=Pi/RdtnDT in the cosine transform]
+	     1   NBody          - Number of WAMIT bodies to be used (-) [>=1; only used when PotMod=1. If NBodyMod=1, the WAMIT data contains a vector of size 6*NBody x 1 and matrices of size 6*NBody x 6*NBody; if NBodyMod>1, there are NBody sets of WAMIT data each with a vector of size 6 x 1 and matrices of size 6 x 6]
+	     1   NBodyMod       - Body coupling model {1: include coupling terms between each body and NBody in HydroDyn equals NBODY in WAMIT, 2: neglect coupling terms between each body and NBODY=1 with XBODY=0 in WAMIT, 3: Neglect coupling terms between each body and NBODY=1 with XBODY=/0 in WAMIT} (switch) [only used when PotMod=1]
+"unused"         PotFile        - Root name of potential-flow model data; WAMIT output files containing the linear, nondimensionalized, hydrostatic restoring matrix (.hst), frequency-dependent hydrodynamic added mass matrix and damping matrix (.1), and frequency- and direction-dependent wave excitation force vector per unit wave amplitude (.3) (quoted string) [MAKE SURE THE FREQUENCIES INHERENT IN THESE WAMIT FILES SPAN THE PHYSICALLY-SIGNIFICANT RANGE OF FREQUENCIES FOR THE GIVEN PLATFORM; THEY MUST CONTAIN THE ZERO- AND INFINITE-FREQUENCY LIMITS!]
+             1   WAMITULEN      - Characteristic body length scale used to redimensionalize WAMIT output (meters) [only used when PotMod=1]
+	   0.0   PtfmRefxt      - The xt offset of the body reference point(s) from (0,0,0) (meters) [1 to NBody] [only used when PotMod=1]
+	   0.0   PtfmRefyt      - The yt offset of the body reference point(s) from (0,0,0) (meters) [1 to NBody] [only used when PotMod=1]
+	   0.0   PtfmRefzt      - The zt offset of the body reference point(s) from (0,0,0) (meters) [1 to NBody] [only used when PotMod=1. If NBodyMod=2,PtfmRefzt=0.0]
+	   0.0   PtfmRefztRot    - The rotation about zt of the body reference frame(s) from xt/yt (degrees) [1 to NBody] [only used when PotMod=1]
+	   0.0   PtfmVol0       - Displaced volume of water when the platform is in its undisplaced position (m^3) [only used when PotMod=1; USE THE SAME VALUE COMPUTED BY WAMIT AS OUTPUT IN THE .OUT FILE!]
+           0.0   PtfmCOBxt      - The xt offset of the center of buoyancy (COB) from the platform reference point (meters)  [only used when PotMod=1]
+           0.0   PtfmCOByt      - The yt offset of the center of buoyancy (COB) from the platform reference point (meters)  [only used when PotMod=1]
+---------------------- 2ND-ORDER FLOATING PLATFORM FORCES ---------------------- [unused with WaveMod=0 or 6, or PotMod=0 or 2]
+             0   MnDrift        - Mean-drift 2nd-order forces computed                                       {0: None; [7, 8, 9, 10, 11, or 12]: WAMIT file to use} [Only one of MnDrift, NewmanApp, or DiffQTF can be non-zero]
+             0   NewmanApp      - Mean- and slow-drift 2nd-order forces computed with Newman's approximation {0: None; [7, 8, 9, 10, 11, or 12]: WAMIT file to use} [Only one of MnDrift, NewmanApp, or DiffQTF can be non-zero. Used only when WaveDirMod=0]
+             0   DiffQTF        - Full difference-frequency 2nd-order forces computed with full QTF          {0: None; [10, 11, or 12]: WAMIT file to use}          [Only one of MnDrift, NewmanApp, or DiffQTF can be non-zero]
+             0   SumQTF         - Full summation -frequency 2nd-order forces computed with full QTF          {0: None; [10, 11, or 12]: WAMIT file to use}
+---------------------- PLATFORM ADDITIONAL STIFFNESS AND DAMPING  --------------
+           0.0   AddF0    - Additional preload (N, N-m) [If NBodyMod=1, one size 6*NBody x 1 vector; if NBodyMod>1, NBody size 6 x 1 vectors]
+           0.0   
+           0.0   
+           0.0   
+           0.0   
+           0.0   
+             0             0             0             0             0             0   AddCLin  - Additional linear stiffness (N/m, N/rad, N-m/m, N-m/rad)
+             0             0             0             0             0             0
+             0             0             0             0             0             0
+             0             0             0             0             0             0
+             0             0             0             0             0             0
+             0             0             0             0             0             0
+             0             0             0             0             0             0   AddBLin  - Additional linear damping(N/(m/s), N/(rad/s), N-m/(m/s), N-m/(rad/s))
+             0             0             0             0             0             0
+             0             0       4389794.6           0             0             0
+             0             0             0             0             0             0
+             0             0             0             0             0             0
+             0             0             0             0             0             0
+             0             0             0             0             0             0   AddBQuad - Additional quadratic drag(N/(m/s)^2, N/(rad/s)^2, N-m(m/s)^2, N-m/(rad/s)^2)
+             0             0             0             0             0             0
+             0             0             0             0             0             0
+             0             0             0             0             0             0
+             0             0             0             0             0             0
+             0             0             0             0             0             0
+---------------------- STRIP THEORY --------------------------------------
+	0	WaveDisp  	- Method of computing Wave Kinematics {0: use undisplaced position, 1: use displaced position)
+	1	AMMod 		- Method of computing distributed added-mass force. {0: nodes below SWL when undisplaced. 1: Up to the free surface}
+---------------------- AXIAL COEFFICIENTS --------------------------------------
+             1   NAxCoef        - Number of axial coefficients (-)
+AxCoefID  AxCd     AxCa     AxCp	AxFDMod		AxVnCOff	AxFDLoFSc
+   (-)    (-)      (-)      (-)		(-)		(-)		(-)
+   1     0.00     0.00     1.00		0		0		0
+---------------------- MEMBER JOINTS -------------------------------------------
+27	NJoints		- Number of joints (-)   [must be exactly 0 or at least 2]
+JointID	Jointxi		Jointyi		Jointzi		JointAxID	JointOvrlp	[JointOvrlp= 0: do nothing atjoint, 1: eliminate overlaps by calculating super member]
+(-)	(m)		(m)		(m)		(-)		(switch)
+1	0.0		8.66		14.1		1		0
+2	7.5		-4.33		14.1		1		0
+3	-7.5		-4.33		14.1		1		0
+4	0.0		12.46		-14.2		1		0
+5	10.791		-6.23		-14.2		1		0
+6	-10.791		-6.23		-14.2		1		0
+7	0.0		14.206		-27.2		1		0
+8	12.302		-7.103		-27.2		1		0
+9	-12.302		-7.103		-27.2		1		0
+10	0.0		16.22		-42.2		1		0
+11	14.047		-8.11		-42.2		1		0
+12	-14.047		-8.11		-42.2		1		0
+13	0.0		18.475		-59.0		1		0
+14	16.0		-9.238		-59.0		1		0
+15	-16.0		-9.238		-59.0		1		0
+16	0.0		18.475		-60.1		1		0
+17	16.0		-9.238		-60.1		1		0
+18	-16.0		-9.238		-60.1		1		0
+19	5.773		3.333		-20.275		1		0
+20	0.0		-6.666		-20.275		1		0
+21	-5.773		3.333		-20.275		1		0
+22	6.587		3.803		-34.204		1		0
+23	0.0		-7.606		-34.204		1		0
+24	-6.587		3.803		-34.204		1		0
+25	7.512		4.337		-50.054		1		0
+26	0.0		-8.674		-50.054		1		0
+27	-7.512		4.337		-50.054		1		0
+---------------------- MEMBER CROSS-SECTION PROPERTIES -------------------------
+            9   NPropSets      - Number of member property sets (-)
+PropSetID    PropD         PropThck
+   (-)        (m)            (m)
+   1        1.2             0.052
+   2        1.4             0.045
+   3        1.5             0.048
+   4        2.0             0.050
+   5        3.0             0.050
+   6        1.1             0.070
+   7        1.0             0.020
+   8        1.0             0.020
+   9        1.0             0.020
+---------------------- SIMPLE HYDRODYNAMIC COEFFICIENTS (model 1) --------------
+  SimplCd    SimplCdMG    SimplCa    SimplCaMG    SimplCp    SimplCpMG   SimplAxCd  SimplAxCdMG  SimplAxCa  SimplAxCaMG  SimplAxCp  SimplAxCpMG
+    (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)    
+    1.05         1.05         0.2         0.2         1.0         1.0         1.05         1.05        0.2         0.2         1.0         1.0    
+---------------------- DEPTH-BASED HYDRODYNAMIC COEFFICIENTS (model 2) ---------
+             0   NCoefDpth       - Number of depth-dependent coefficients (-)
+   Dpth       DpthCd     DpthCdMG     DpthCa     DpthCaMG     DpthCp     DpthCpMG    DpthAxCd   DpthAxCdMG   DpthAxCa   DpthAxCaMG   DpthAxCp   DpthAxCpMG 
+    (m)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)    
+---------------------- MEMBER-BASED HYDRODYNAMIC COEFFICIENTS (model 3) --------
+0           NCoefMembers - Number of member-based coefficients (-)
+MemberID_HydC  MemberCd1   MemberCd2  MemberCdMG1 MemberCdMG2  MemberCa1   MemberCa2  MemberCaMG1 MemberCaMG2  MemberCp1   MemberCp2  MemberCpMG1 MemberCpMG2 MemberAxCd1 MemberAxCd2 MemberAxCdMG1 MemberAxCdMG2 MemberAxCa1 MemberAxCa2 MemberAxCaMG1 MemberAxCaMG2 MemberAxCp1 MemberAxCp2 MemberAxCpMG1 MemberAxCpMG2
+    (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)         (-)    
+-------------------- MEMBERS -------------------------------------------------
+57		NMembers		- Number of members (-)
+MemberID	MJointID1	MJointID2	MPropSetID1	MPropSetID2	MDivSize	MCoefMod	PropPot	[MCoefMod=1: use simple coeff table, 2: use depth-based coeff table, 3: use member-basedcoeff table] [ PropPot/=0 if member is modeled with potential-flow theory]
+(-)		(-)		(-)		(-)		(-)		(m)		(switch)	(flag)
+1		1		4		1		1		0.5000		1		FALSE
+2		2		5		1		1		0.5000		1		FALSE
+3		3		6		1		1		0.5000		1		FALSE
+4		4		7		2		2		1.0000		1		FALSE
+5		5		8		2		2		1.0000		1		FALSE
+6		6		9		2		2		1.0000		1		FALSE
+7		7		10		3		3		1.0000		1		FALSE
+8		8		11		3		3		1.0000		1		FALSE
+9		9		12		3		3		1.0000		1		FALSE
+10		10		13		4		4		1.0000		1		FALSE
+11		11		14		4		4		1.0000		1		FALSE
+12		12		15		4		4		1.0000		1		FALSE
+13		13		16		5		5		1.0000		1		FALSE
+14		14		17		5		5		1.0000		1		FALSE
+15		15		18		5		5		1.0000		1		FALSE
+16		1		5		6		6		0.5000		1		FALSE
+17		2		4		6		6		0.5000		1		FALSE
+18		2		6		6		6		0.5000		1		FALSE
+19		3		5		6		6		0.5000		1		FALSE
+20		3		4		6		6		0.5000		1		FALSE
+21		1		6		6		6		0.5000		1		FALSE
+22		19		4		7		7		1.0000		1		FALSE
+23		19		5		7		7		1.0000		1		FALSE
+24		19		7		7		7		1.0000		1		FALSE
+25		19		8		7		7		1.0000		1		FALSE
+26		20		5		7		7		1.0000		1		FALSE
+27		20		6		7		7		1.0000		1		FALSE
+28		20		8		7		7		1.0000		1		FALSE
+29		20		9		7		7		1.0000		1		FALSE
+30		21		6		7		7		1.0000		1		FALSE
+31		21		4		7		7		1.0000		1		FALSE
+32		21		9		7		7		1.0000		1		FALSE
+33		21		7		7		7		1.0000		1		FALSE
+34		22		7		8		8		1.0000		1		FALSE
+35		22		8		8		8		1.0000		1		FALSE
+36		22		10		8		8		1.0000		1		FALSE
+37		22		11		8		8		1.0000		1		FALSE
+38		23		8		8		8		1.0000		1		FALSE
+39		23		9		8		8		1.0000		1		FALSE
+40		23		11		8		8		1.0000		1		FALSE
+41		23		12		8		8		1.0000		1		FALSE
+42		24		9		8		8		1.0000		1		FALSE
+43		24		7		8		8		1.0000		1		FALSE
+44		24		12		8		8		1.0000		1		FALSE
+45		24		10		8		8		1.0000		1		FALSE
+46		25		10		9		9		1.0000		1		FALSE
+47		25		11		9		9		1.0000		1		FALSE
+48		25		13		9		9		1.0000		1		FALSE
+49		25		14		9		9		1.0000		1		FALSE
+50		26		11		9		9		1.0000		1		FALSE
+51		26		12		9		9		1.0000		1		FALSE
+52		26		14		9		9		1.0000		1		FALSE
+53		26		15		9		9		1.0000		1		FALSE
+54		27		12		9		9		1.0000		1		FALSE
+55		27		10		9		9		1.0000		1		FALSE
+56		27		15		9		9		1.0000		1		FALSE
+57		27		13		9		9		1.0000		1		FALSE
+---------------------- FILLED MEMBERS ------------------------------------------
+             1   NFillGroups     - Number of filled member groups (-) [If FillDens = DEFAULT, then FillDens = WtrDens; FillFSLoc is related to MSL2SWL]
+FillNumM FillMList             													FillFSLoc     FillDens
+(-)      (-)                   													(m)           (kg/m^3)
+1	1 2 3 4 5 6 7 8 9 10 11 12 13 14 15											0		1025
+---------------------- MARINE GROWTH -------------------------------------------
+            2   NMGDepths      - Number of marine-growth depths specified (-)
+MGDpth     MGThck       MGDens
+(m)        (m)         (kg/m^3)
+13        0.05         1325
+-40.00     0.05         1325
+---------------------- MEMBER OUTPUT LIST --------------------------------------
+             0   NMOutputs      - Number of member outputs (-) [must be < 10]
+MemberID   NOutLoc    NodeLocs [NOutLoc < 10; node locations are normalized distance from the start of the member, and must be >=0 and <= 1] [unused if NMOutputs=0]
+  (-)        (-)        (-)
+---------------------- JOINT OUTPUT LIST ---------------------------------------
+             1   NJOutputs      - Number of joint outputs [Must be < 10]
+   10             JOutLst        - List of JointIDs which are to be output (-)[unused if NJOutputs=0]
+---------------------- OUTPUT --------------------------------------------------
+False             HDSum          - Output a summary file [flag]
+False            OutAll         - Output all user-specified member and joint loads (only at each member end, not interior locations) [flag]
+             2   OutSwtch       - Output requested channels to: [1=Hydrodyn.out, 2=GlueCode.out, 3=both files]
+"ES11.4e2"       OutFmt         - Output format for numerical results (quoted string) [not checked for validity!]
+"A11"            OutSFmt        - Output format for header strings (quoted string) [not checked for validity!]
+---------------------- OUTPUT CHANNELS -----------------------------------------
+"J1Vxi, J1Vyi, J1Vzi"
+END of output channels and end of file. (the word "END" must appear in the first 3 columns of this line)
